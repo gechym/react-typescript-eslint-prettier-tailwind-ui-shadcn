@@ -7,7 +7,7 @@ function Post() {
 
   useEffect(() => {
     dispatch({ type: 'GETING_POST', payload: null });
-    fetch('https://jsonplaceholder.typicode.com/postsaaaa')
+    fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response) => {
         if (response.ok) {
           return response.json();
