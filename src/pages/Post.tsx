@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // redux
 import postSelector from '../stores/selecter/post.selecter';
-import postSlice from '../stores/slicer/post.slice';
+import { getPost, getPostError, getingPost } from '../stores/action/post.action';
 
 function Post() {
   const posts = useSelector(postSelector);
@@ -11,7 +11,7 @@ function Post() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(postSlice.actions.getingPost());
+    dispatch(getingPost());
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response) => {
         if (response.ok) {
@@ -20,10 +20,10 @@ function Post() {
         throw new Error('Something went wrong');
       })
       .then((json) => {
-        dispatch(postSlice.actions.getPost(json));
+        dispatch(getPost(json));
       })
       .catch(() => {
-        dispatch(postSlice.actions.getPostError());
+        dispatch(getPostError());
       });
   }, [dispatch]);
 

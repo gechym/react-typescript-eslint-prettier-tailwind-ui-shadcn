@@ -2,8 +2,8 @@ import React from 'react';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import themeSlice from 'stores/slicer/theme.slice';
 import themeSelecter from 'stores/selecter/theme.selecter';
+import { toggleTheme } from 'stores/action/theme.action';
 // style
 import './styles/globals.css';
 
@@ -12,7 +12,7 @@ function App() {
   const { theme } = useSelector(themeSelecter);
 
   const handleChangeTheme = (themeChange : string) => {
-    dispatch(themeSlice.actions.toggleTheme(themeChange));
+    dispatch(toggleTheme(themeChange));
   };
 
   return (

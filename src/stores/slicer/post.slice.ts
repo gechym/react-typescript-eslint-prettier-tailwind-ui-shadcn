@@ -28,3 +28,20 @@ const postSlice = createSlice({
 });
 
 export default postSlice;
+
+//
+// const todosSlice = createSlice({
+//   name: 'todos',
+//   initialState: [] as Item[],
+//   reducers: {
+//     addTodo: {
+//       reducer: (state, action: PayloadAction<Item>) => {
+//         state.push(action.payload)
+//       },
+//       prepare: (text: string) => {
+//         const id = nanoid()
+//         return { payload: { id, text } }
+//       },
+//     },
+//   },
+// })
