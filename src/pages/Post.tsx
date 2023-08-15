@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
-import usePost from 'stores/postStore/usePost';
+import { useDispatch, useSelector } from 'react-redux';
+
+// redux
+import postSelector from '../stores/selecter/post.selecter';
+import postSlice from '../stores/slicer/post.slice';
 
 function Post() {
-  const { state, dispatch } = usePost();
-  const { data, isLoading, error } = state;
+  const posts = useSelector(postSelector);
+  const { data, isLoading, error } = posts;
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: 'GETING_POST', payload: null });
+    dispatch(postSlice.actions.getingPost());
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response) => {
         if (response.ok) {
@@ -15,10 +20,10 @@ function Post() {
         throw new Error('Something went wrong');
       })
       .then((json) => {
-        dispatch({ type: 'GET_POST', payload: json });
+        dispatch(postSlice.actions.getPost(json));
       })
       .catch(() => {
-        dispatch({ type: 'GET_POST_ERROR', payload: 'oh shit!!' });
+        dispatch(postSlice.actions.getPostError());
       });
   }, [dispatch]);
 

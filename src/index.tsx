@@ -1,10 +1,12 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+// redux
+import store from 'stores/stores';
+// component
 import DefaultLayout from 'layouts/defaultLayout';
-import { ThemeProvider } from 'stores/themeStores/ThemeContext';
 import Post from 'pages/Post';
-import PostProvider from 'stores/postStore/PostProvider';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -25,9 +27,7 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <ThemeProvider>
-    <PostProvider>
-      <RouterProvider router={router} />
-    </PostProvider>
-  </ThemeProvider>,
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>,
 );
