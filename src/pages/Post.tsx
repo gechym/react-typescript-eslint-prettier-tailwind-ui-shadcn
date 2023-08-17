@@ -2,29 +2,21 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // redux
+import { fetchPosts } from 'stores/slicer/post.slice';
+import { AppDispatch } from 'stores/stores';
 import postSelector from '../stores/selecter/post.selecter';
-import { getPost, getPostError, getingPost } from '../stores/action/post.action';
 
 function Post() {
   const posts = useSelector(postSelector);
   const { data, isLoading, error } = posts;
-  const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dispatch = useDispatch< AppDispatch | any>();
 
   useEffect(() => {
-    dispatch(getingPost());
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('Something went wrong');
-      })
-      .then((json) => {
-        dispatch(getPost(json));
-      })
-      .catch(() => {
-        dispatch(getPostError());
-      });
+    const fetchData = async () => {
+      await dispatch(fetchPosts(1));
+    };
+    fetchData();
   }, [dispatch]);
 
   return (

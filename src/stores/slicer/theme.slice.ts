@@ -1,8 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // type
 import ThemeStateType from 'types/theme.type';
 import setThemeClass from 'utils/setThemeClass';
+
+const toggleTheme = createAction<string>('toggleTheme');
 
 const initialState : ThemeStateType = {
   theme: 'light',
@@ -17,6 +20,17 @@ const themeSlice = createSlice({
       state.theme = action.payload;
       setThemeClass(action.payload);
     },
+    getTheme: (state) => {
+      state.theme = localStorage.getItem('theme') || 'system';
+      setThemeClass(state.theme);
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(toggleTheme, (state, action) => {
+      state.theme = action.payload;
+      setThemeClass(action.payload);
+      return state;
+    });
   },
 });
 

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 // type
 import PostType, { PostStateType } from 'types/post.type';
@@ -9,21 +9,44 @@ const initialState : PostStateType = {
   error: '',
 };
 
+type AsyncThunkConfig = {
+  rejectValue : string
+  extra: {
+    jwt: string
+  }
+};
+
+export const fetchPosts = createAsyncThunk< PostType[], number, AsyncThunkConfig>('post/fetchPosts', async (number, thuckAPI) => {
+  try {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+    if (res.ok) {
+      const data = await res.json();
+      return thuckAPI.fulfillWithValue(data);
+    }
+    return thuckAPI.rejectWithValue(`Failed to get what I want, got status: ${res.status}`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error : any) {
+    return thuckAPI.rejectWithValue(error.stack);
+  }
+});
+
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    getingPost: (state) => {
+
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPosts.pending, (state) => {
       state.isLoading = true;
-    },
-    getPost: (state, action : PayloadAction<PostType[]>) => {
+    }).addCase(fetchPosts.fulfilled, (state, action) => {
       state.data = action.payload;
       state.isLoading = false;
-    },
-    getPostError: (state) => {
-      state.error = 'oh shit';
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }).addCase(fetchPosts.rejected, (state, action) => {
       state.isLoading = false;
-    },
+      state.error = action.payload || 'lỗi rồi';
+    });
   },
 });
 

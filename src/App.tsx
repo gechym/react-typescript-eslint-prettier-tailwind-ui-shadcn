@@ -6,9 +6,10 @@ import themeSelecter from 'stores/selecter/theme.selecter';
 import { toggleTheme } from 'stores/action/theme.action';
 // style
 import './styles/globals.css';
+import { AppDispatch } from 'stores/stores';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { theme } = useSelector(themeSelecter);
 
   const handleChangeTheme = (themeChange : string) => {

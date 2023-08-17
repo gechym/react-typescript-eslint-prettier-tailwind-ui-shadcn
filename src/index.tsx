@@ -8,6 +8,8 @@ import store from 'stores/stores';
 import DefaultLayout from 'layouts/defaultLayout';
 import Post from 'pages/Post';
 import App from './App';
+// style
+import './styles/globals.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
