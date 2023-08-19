@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import request from 'utils/axios';
 import axios from 'axios';
 
 // type
 import PostType, { PostStateType } from 'types/post.type';
 import ErrorServerType from 'types/errorServer.type';
+import request from 'services/api/request';
 
 const initialState : PostStateType = {
   isLoading: false,
@@ -59,7 +59,6 @@ const postSlice = createSlice({
 });
 
 export default postSlice;
-
 
 // const todosSlice = createSlice({
 //   name: 'todos',
