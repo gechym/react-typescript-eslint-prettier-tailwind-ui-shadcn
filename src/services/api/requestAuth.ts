@@ -19,7 +19,7 @@ const getLocalToken = (key : string) => {
 };
 
 const configRequest = (config : InternalAxiosRequestConfig<any>) => {
-  if (config.url === 'login') {
+  if (config.url === 'login' || config.url === 'refreshToken') {
     return config;
   }
 
@@ -39,13 +39,12 @@ requestAuth.interceptors.request.use(configRequest, (error) => Promise.reject(er
 const configResponse = async (response : AxiosResponse<any, any>) => {
   const configReq = response.config;
   if (configReq.url === 'login') {
-    const res = response.data;
-    setLocalToken('accessToken', res.accessToken);
-    setLocalToken('refreshToken', res.refreshToken);
+    setLocalToken('accessToken', response.data.accessToken);
+    setLocalToken('refreshToken', response.data.refreshToken);
   }
 
   if (response.data.error === 'jwt expired') {
-    const res = await requestAuth.post('/refreshToken', {
+    const res = await requestAuth.post('refreshToken', {
       refreshToken: getLocalToken('refreshToken'),
     });
     configReq.headers.Authorization = res.data.accessToken;

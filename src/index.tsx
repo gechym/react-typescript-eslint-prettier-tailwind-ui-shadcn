@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 // redux
 import store from 'stores/stores';
 // component
@@ -16,11 +16,28 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <DefaultLayout childrent={<App />} />,
+    element: <DefaultLayout />,
+    children: [
+      {
+        index: true,
+        element: <App />,
+      },
+    ],
   },
   {
     path: '/post',
-    element: <DefaultLayout childrent={<Post />} />,
+    element: <DefaultLayout />,
+    children: [
+      {
+        index: true,
+        path: '',
+        element: <Post />,
+      },
+      {
+        path: ':postId',
+        element: (<div><Link to="/">Your Name</Link></div>),
+      },
+    ],
   },
   {
     path: '*',
