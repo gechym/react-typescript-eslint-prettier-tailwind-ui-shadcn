@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+import { error } from 'console';
 
 const requestAuth = axios.create({
   baseURL: 'http://localhost:5000',
@@ -30,10 +32,9 @@ const configRequest = (config : InternalAxiosRequestConfig<any>) => {
 
   return config;
 };
-const onRejectedRequest = (error: any) => Promise.reject(error);
 
 // [configRequest]
-requestAuth.interceptors.request.use(configRequest, onRejectedRequest);
+requestAuth.interceptors.request.use(configRequest, (error) => Promise.reject(error));
 
 const configResponse = async (response : AxiosResponse<any, any>) => {
   const configReq = response.config;
@@ -54,9 +55,8 @@ const configResponse = async (response : AxiosResponse<any, any>) => {
 
   return response;
 };
-const onRejectedResponse = (error: any) => Promise.reject(error);
 
 // [configResponse]
-requestAuth.interceptors.response.use(configResponse, onRejectedResponse);
+requestAuth.interceptors.response.use(configResponse, (error) => Promise.reject(error));
 
 export default requestAuth;
