@@ -21,7 +21,7 @@ type AsyncThunkConfig = {
 
 export const fetchPosts = createAsyncThunk< PostType[], number, AsyncThunkConfig>('post/fetchPosts', async (number, thuckAPI) => {
   try {
-    const res = await request.get<PostType[]>('postsaaa');
+    const res = await request.get<PostType[]>('posts');
     if (res.data) {
       const data = await res.data;
       return thuckAPI.fulfillWithValue(data);
