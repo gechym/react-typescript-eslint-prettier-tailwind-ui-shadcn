@@ -1,9 +1,7 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 // redux
-import store from 'stores/stores';
 // component
 import DefaultLayout from 'layouts/defaultLayout';
 import Post from 'pages/Post';
@@ -46,7 +44,5 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
+  <RouterProvider router={router} />,
 );
