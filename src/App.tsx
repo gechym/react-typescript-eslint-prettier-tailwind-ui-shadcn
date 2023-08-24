@@ -8,22 +8,46 @@ import { toggleTheme } from 'stores/action/theme.action';
 import './styles/globals.css';
 import { AppDispatch } from 'stores/stores';
 import requestAuth from 'services/api/requestAuth';
+import userSelecter from 'stores/selecter/user.selecter';
+import { login } from 'stores/slicer/user.slice';
 
 function App() {
-  const dispatch = useDispatch<AppDispatch>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dispatch = useDispatch<AppDispatch | any>();
   const { theme } = useSelector(themeSelecter);
+  const { isLoading, user } = useSelector(userSelecter);
+
+  // window.addEventListener('loadstart', (e: Event) => {
+  //   console.log(e);
+  //   dispatch(saveToke({
+  //     accessToken: localStorage.getItem('accessToken') || '',
+  //     refreshToken: localStorage.getItem('refreshToken') || '',
+  //   }));
+  // });
+
+  // window.onload = (event : BeforeUnloadEvent) => {
+  //   console.log(event);
+  //   dispatch(saveToke({
+  //     accessToken: localStorage.getItem('accessToken') || '',
+  //     refreshToken: localStorage.getItem('refreshToken') || '',
+  //   }));
+  // };
+
+  // window.onbeforeunload = (e: BeforeUnloadEvent) => {
+  //   // https://www.uriports.com/blog/easy-fix-for-blocked-attempt-beforeunload-confirmation-panel/
+  //   // eslint-disable-next-line no-param-reassign
+  //   e.returnValue = 'Are you sure you want to leave?';
+  // };
 
   const handleChangeTheme = (themeChange : string) => {
     dispatch(toggleTheme(themeChange));
   };
 
   const handleLogin = async () => {
-    try {
-      const res = await requestAuth.post('login');
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+    await dispatch(login({
+      username: 'user',
+      password: 'user',
+    }));
   };
 
   const handleGetUser = async () => {
@@ -50,7 +74,12 @@ function App() {
       <br />
       <button type="button" onClick={() => handleLogin()}>login</button>
       <br />
-      <button type="button" onClick={() => handleGetUser()}>userlist</button>
+      <button type="button" onClick={() => handleGetUser()}>users</button>
+
+      <div>
+        {isLoading ? <>loading...</> : null}
+        {user ? <h1>{user.name}</h1> : null}
+      </div>
     </div>
   );
 }

@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 // type
 import PostType, { PostStateType } from 'types/post.type';
-import ErrorServerType from 'types/errorServer.type';
 import request from 'services/api/request';
+import handleFetchError from 'utils/handleFetchError';
 
 const initialState : PostStateType = {
   isLoading: false,
@@ -29,12 +28,7 @@ export const fetchPosts = createAsyncThunk< PostType[], number, AsyncThunkConfig
     return thuckAPI.rejectWithValue(`Failed to get what I want, got status: ${res.status}`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error : any) {
-    if (axios.isAxiosError<ErrorServerType>(error)) {
-      if (error.response?.data.messErr) {
-        return thuckAPI.rejectWithValue(error.response?.data.messErr);
-      }
-    }
-    return thuckAPI.rejectWithValue(error.stack);
+    return thuckAPI.rejectWithValue(handleFetchError(error));
   }
 });
 
@@ -53,7 +47,7 @@ const postSlice = createSlice({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }).addCase(fetchPosts.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload || 'lỗi rồi';
+      state.error = action.payload || 'Something went wrong';
     });
   },
 });

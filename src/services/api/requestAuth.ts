@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
-import { error } from 'console';
 
 const requestAuth = axios.create({
   baseURL: 'http://localhost:5000',
